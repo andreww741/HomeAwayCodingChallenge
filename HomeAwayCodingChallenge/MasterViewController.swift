@@ -7,20 +7,33 @@
 //
 
 import UIKit
+import AlamofireImage
 
-class MasterViewController: UITableViewController {
+class MasterViewController: UITableViewController, UISearchResultsUpdating {
 
+    let CLIENT_ID = "MTMxMTMwMjl8MTUzNjY4MDY3Ny4wMw"
+    
+    
+    let imageCache = AutoPurgingImageCache()
+    
+    let searchController = UISearchController(searchResultsController: nil)
+    
     var detailViewController: DetailViewController? = nil
-    var objects = [Any]()
+    var events: [Event]?
+    
+    var queryTask: URLSessionDataTask?
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        navigationItem.leftBarButtonItem = editButtonItem
-
-        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(insertNewObject(_:)))
-        navigationItem.rightBarButtonItem = addButton
+        
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+        definesPresentationContext = true
+        
         if let split = splitViewController {
             let controllers = split.viewControllers
             detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
@@ -30,28 +43,72 @@ class MasterViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         clearsSelectionOnViewWillAppear = splitViewController!.isCollapsed
         super.viewWillAppear(animated)
+        
+        tableView.reloadData()
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    // MARK: - Query
+    
+    func apiRequestURL(for searchText: String) -> URL? {
+        //if we wanted to do further query string formatting (e.g., remove punctuation, etc), we could pull this into its own method
+        //for the purposes of this challenge I decided to keep the formatting to a minimum
+        let formattedSearchText = searchText.replacingOccurrences(of: " ", with: "+")
+        
+        return URL(string: "https://api.seatgeek.com/2/events?client_id=\(CLIENT_ID)&q=\(formattedSearchText)")
     }
-
-    @objc
-    func insertNewObject(_ sender: Any) {
-        objects.insert(NSDate(), at: 0)
-        let indexPath = IndexPath(row: 0, section: 0)
-        tableView.insertRows(at: [indexPath], with: .automatic)
+    
+    func performQuery(for searchText: String, completion: @escaping (_ results: [Event]?) -> Void) {
+        if searchText.count == 0 {
+            completion(nil)
+            return
+        }
+        
+        guard let requestURL = apiRequestURL(for: searchText) else {
+            completion(nil)
+            return
+        }
+        
+        queryTask?.cancel() //mark the old query for cancellation
+        
+        var request = URLRequest(url: requestURL)
+        request.httpMethod = "GET"
+        
+        queryTask = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            guard let data = data, error == nil else {
+                print("fetch error = \(String(describing: error))")
+                return
+            }
+            
+            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 { //HTTP status code 200 = success
+                print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                print("response = \(String(describing: response))")
+            }
+            
+            do {
+                let decoder = JSONDecoder()
+                
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+                decoder.dateDecodingStrategy = .formatted(dateFormatter)
+                
+                let result = try decoder.decode(QueryResult.self, from: data)
+                completion(result.events)
+            } catch let jsonError {
+                print("JSON Error = \(String(describing: jsonError))")
+                completion(nil)
+            }
+        }
+        queryTask?.resume()
     }
 
     // MARK: - Segues
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showDetail" {
+        if segue.identifier == "showEvent" {
             if let indexPath = tableView.indexPathForSelectedRow {
-                let object = objects[indexPath.row] as! NSDate
                 let controller = (segue.destination as! UINavigationController).topViewController as! DetailViewController
-                controller.detailItem = object
+                controller.imageCache = imageCache
+                controller.event = events![indexPath.row]
                 controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
                 controller.navigationItem.leftItemsSupplementBackButton = true
             }
@@ -65,31 +122,59 @@ class MasterViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return objects.count
+        return (events?.count ?? 0)
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! EventTableViewCell
 
-        let object = objects[indexPath.row] as! NSDate
-        cell.textLabel!.text = object.description
+        if let event = events?[indexPath.row] {
+            cell.favoriteIndicator.isHidden = !event.isFavorite
+            
+            //use AlamofireImage to fetch image asynchronously and then cache
+            if let cachedImage = imageCache.image(withIdentifier: String(event.id)) {
+                cell.imgView.image = cachedImage
+            } else if let imageURL = event.performers?.first?.imageURL {
+                cell.imgView.af_setImage(withURL: imageURL, placeholderImage: #imageLiteral(resourceName: "placeholder")) { [weak self, weak cell] (dataResponse) in
+                    if let image = cell?.imgView.image {
+                        self?.imageCache.add(image, withIdentifier: String(event.id))
+                    }
+                }
+            } else {
+                cell.imgView.image = #imageLiteral(resourceName: "placeholder")
+                
+                imageCache.add(#imageLiteral(resourceName: "placeholder"), withIdentifier: String(event.id))
+            }
+            
+            cell.titleLabel.text = event.title
+            
+            cell.subtitleLabel.text = (event.venue?.location ?? "Unknown")
+            
+            cell.detailLabel.text = event.dateDisplayString
+        }
+        
         return cell
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+        return false
     }
-
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            objects.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
+    
+    // MARK: - UISearchResultsUpdating
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let searchText = searchController.searchBar.text else {
+            return
+        }
+        
+        performQuery(for: searchText) { [weak self] (events) in
+            self?.events = events
+            
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
+            }
         }
     }
-
 
 }
 

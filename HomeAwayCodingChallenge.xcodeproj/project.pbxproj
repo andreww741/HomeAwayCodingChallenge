@@ -7,15 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		10C2C041DADEE41896465D15 /* Pods_HomeAwayCodingChallenge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC277B5DC9922458A4EE819E /* Pods_HomeAwayCodingChallenge.framework */; };
+		499236E4214849F500F45E51 /* FavoritesHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499236E3214849F500F45E51 /* FavoritesHelper.swift */; };
 		49D82C9321481953008A80A0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D82C9221481953008A80A0 /* AppDelegate.swift */; };
 		49D82C9521481953008A80A0 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D82C9421481953008A80A0 /* MasterViewController.swift */; };
 		49D82C9721481953008A80A0 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D82C9621481953008A80A0 /* DetailViewController.swift */; };
 		49D82C9A21481954008A80A0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49D82C9821481954008A80A0 /* Main.storyboard */; };
 		49D82C9C21481955008A80A0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49D82C9B21481955008A80A0 /* Assets.xcassets */; };
 		49D82C9F21481955008A80A0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49D82C9D21481955008A80A0 /* LaunchScreen.storyboard */; };
+		49D82CA7214822DD008A80A0 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D82CA6214822DD008A80A0 /* Event.swift */; };
+		49D82CAB21482CCC008A80A0 /* EventTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D82CAA21482CCC008A80A0 /* EventTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		499236E3214849F500F45E51 /* FavoritesHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesHelper.swift; sourceTree = "<group>"; };
 		49D82C8F21481953008A80A0 /* HomeAwayCodingChallenge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HomeAwayCodingChallenge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49D82C9221481953008A80A0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		49D82C9421481953008A80A0 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
@@ -24,6 +29,11 @@
 		49D82C9B21481955008A80A0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		49D82C9E21481955008A80A0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		49D82CA021481955008A80A0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		49D82CA6214822DD008A80A0 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		49D82CAA21482CCC008A80A0 /* EventTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTableViewCell.swift; sourceTree = "<group>"; };
+		A7581F6E650A84D2C6E25197 /* Pods-HomeAwayCodingChallenge.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HomeAwayCodingChallenge.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HomeAwayCodingChallenge/Pods-HomeAwayCodingChallenge.debug.xcconfig"; sourceTree = "<group>"; };
+		DC277B5DC9922458A4EE819E /* Pods_HomeAwayCodingChallenge.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HomeAwayCodingChallenge.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E82DABC839AFE77BFD17A624 /* Pods-HomeAwayCodingChallenge.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HomeAwayCodingChallenge.release.xcconfig"; path = "Pods/Target Support Files/Pods-HomeAwayCodingChallenge/Pods-HomeAwayCodingChallenge.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +41,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				10C2C041DADEE41896465D15 /* Pods_HomeAwayCodingChallenge.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -42,6 +53,8 @@
 			children = (
 				49D82C9121481953008A80A0 /* HomeAwayCodingChallenge */,
 				49D82C9021481953008A80A0 /* Products */,
+				B279B3EA1F9D5F582D694D14 /* Pods */,
+				89C2269E3DC607E514C5006D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -57,14 +70,34 @@
 			isa = PBXGroup;
 			children = (
 				49D82C9221481953008A80A0 /* AppDelegate.swift */,
+				499236E3214849F500F45E51 /* FavoritesHelper.swift */,
+				49D82CA6214822DD008A80A0 /* Event.swift */,
 				49D82C9421481953008A80A0 /* MasterViewController.swift */,
 				49D82C9621481953008A80A0 /* DetailViewController.swift */,
+				49D82CAA21482CCC008A80A0 /* EventTableViewCell.swift */,
 				49D82C9821481954008A80A0 /* Main.storyboard */,
 				49D82C9B21481955008A80A0 /* Assets.xcassets */,
 				49D82C9D21481955008A80A0 /* LaunchScreen.storyboard */,
 				49D82CA021481955008A80A0 /* Info.plist */,
 			);
 			path = HomeAwayCodingChallenge;
+			sourceTree = "<group>";
+		};
+		89C2269E3DC607E514C5006D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DC277B5DC9922458A4EE819E /* Pods_HomeAwayCodingChallenge.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B279B3EA1F9D5F582D694D14 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A7581F6E650A84D2C6E25197 /* Pods-HomeAwayCodingChallenge.debug.xcconfig */,
+				E82DABC839AFE77BFD17A624 /* Pods-HomeAwayCodingChallenge.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -74,9 +107,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 49D82CA321481955008A80A0 /* Build configuration list for PBXNativeTarget "HomeAwayCodingChallenge" */;
 			buildPhases = (
+				FC0E30D3F6BC7B8D6478A6BD /* [CP] Check Pods Manifest.lock */,
 				49D82C8B21481953008A80A0 /* Sources */,
 				49D82C8C21481953008A80A0 /* Frameworks */,
 				49D82C8D21481953008A80A0 /* Resources */,
+				FD466B27AC7F6E898AA95572 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -133,11 +168,55 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		FC0E30D3F6BC7B8D6478A6BD /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-HomeAwayCodingChallenge-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FD466B27AC7F6E898AA95572 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-HomeAwayCodingChallenge/Pods-HomeAwayCodingChallenge-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HomeAwayCodingChallenge/Pods-HomeAwayCodingChallenge-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		49D82C8B21481953008A80A0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49D82CAB21482CCC008A80A0 /* EventTableViewCell.swift in Sources */,
+				49D82CA7214822DD008A80A0 /* Event.swift in Sources */,
+				499236E4214849F500F45E51 /* FavoritesHelper.swift in Sources */,
 				49D82C9721481953008A80A0 /* DetailViewController.swift in Sources */,
 				49D82C9521481953008A80A0 /* MasterViewController.swift in Sources */,
 				49D82C9321481953008A80A0 /* AppDelegate.swift in Sources */,
@@ -282,6 +361,7 @@
 		};
 		49D82CA421481955008A80A0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A7581F6E650A84D2C6E25197 /* Pods-HomeAwayCodingChallenge.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -300,6 +380,7 @@
 		};
 		49D82CA521481955008A80A0 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E82DABC839AFE77BFD17A624 /* Pods-HomeAwayCodingChallenge.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
