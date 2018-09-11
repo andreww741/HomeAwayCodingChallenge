@@ -14,6 +14,11 @@ struct QueryResult: Codable { //wrapper JSON object
 
 struct Event: Codable, Equatable {
     
+    init(id: Int) { //probably should only be used for tests
+        self.title = ""
+        self.id = id
+    }
+    
     // MARK: - Equatable
     
     static func ==(lhs: Event, rhs: Event) -> Bool {

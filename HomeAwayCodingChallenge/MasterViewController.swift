@@ -57,14 +57,14 @@ class MasterViewController: UITableViewController, UISearchResultsUpdating {
         return URL(string: "https://api.seatgeek.com/2/events?client_id=\(CLIENT_ID)&q=\(formattedSearchText)")
     }
     
-    func performQuery(for searchText: String, completion: @escaping (_ results: [Event]?) -> Void) {
+    func performQuery(for searchText: String, completion: @escaping (_ results: [Event]?, _ response: URLResponse?, _ error: Error?) -> Void) {
         if searchText.count == 0 {
-            completion(nil)
+            completion(nil, nil, nil) //in production code we would add a special error for this case
             return
         }
         
         guard let requestURL = apiRequestURL(for: searchText) else {
-            completion(nil)
+            completion(nil, nil, nil) //in production code we would add a special error for this case
             return
         }
         
@@ -84,6 +84,8 @@ class MasterViewController: UITableViewController, UISearchResultsUpdating {
                 print("response = \(String(describing: response))")
             }
             
+            //in production code we would probably want to upload the network responses to some sort of analytics framework
+            
             do {
                 let decoder = JSONDecoder()
                 
@@ -92,10 +94,10 @@ class MasterViewController: UITableViewController, UISearchResultsUpdating {
                 decoder.dateDecodingStrategy = .formatted(dateFormatter)
                 
                 let result = try decoder.decode(QueryResult.self, from: data)
-                completion(result.events)
+                completion(result.events, response, error)
             } catch let jsonError {
                 print("JSON Error = \(String(describing: jsonError))")
-                completion(nil)
+                completion(nil, response, error)
             }
         }
         queryTask?.resume()
@@ -167,7 +169,7 @@ class MasterViewController: UITableViewController, UISearchResultsUpdating {
             return
         }
         
-        performQuery(for: searchText) { [weak self] (events) in
+        performQuery(for: searchText) { [weak self] (events, response, error) in
             self?.events = events
             
             DispatchQueue.main.async {
